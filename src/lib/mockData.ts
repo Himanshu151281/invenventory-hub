@@ -89,6 +89,7 @@ export const mockSales: Sale[] = [
     totalAmount: mockProducts[0].price,
     paymentMethod: 'card',
     employeeId: '1',
+    channel: 'in-store',
     timestamp: new Date('2023-07-15T14:23:05')
   },
   {
@@ -108,6 +109,7 @@ export const mockSales: Sale[] = [
     totalAmount: mockProducts[1].price + (mockProducts[2].price * 2),
     paymentMethod: 'cash',
     employeeId: '2',
+    channel: 'in-store',
     timestamp: new Date('2023-07-16T10:45:22')
   },
   {
@@ -123,6 +125,7 @@ export const mockSales: Sale[] = [
     paymentMethod: 'online',
     customerId: 'cust001',
     employeeId: '1',
+    channel: 'online',
     timestamp: new Date('2023-07-17T16:12:40')
   }
 ];
