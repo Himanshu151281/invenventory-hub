@@ -15,6 +15,7 @@ import Dashboard from './pages/Dashboard';
 import Inventory from './pages/Inventory';
 import Billing from './pages/Billing';
 import Analytics from './pages/Analytics';
+import Transactions from './pages/Transactions';
 import Auth from './pages/Auth';
 import NotFound from "./pages/NotFound";
 
@@ -63,6 +64,7 @@ const App = () => (
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/inventory" element={<Inventory />} />
                     <Route path="/billing" element={<Billing />} />
+                    <Route path="/transactions" element={<Transactions />} />
                     <Route path="/analytics" element={<Analytics />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
