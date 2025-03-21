@@ -8,7 +8,7 @@ const Dashboard: React.FC = () => {
       <div className="mb-6">
         <h1 className="text-3xl font-bold tracking-tight">Jungle Safari Shop Dashboard</h1>
         <p className="text-muted-foreground">
-          Welcome to your Jungle Safari Souvenir Shop dashboard. Here's an overview of your store operations.
+          Track inventory, sales, and performance metrics for your Jungle Safari souvenir shop.
         </p>
       </div>
       

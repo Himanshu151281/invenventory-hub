@@ -9,7 +9,7 @@ const Inventory: React.FC = () => {
       <div className="mb-6">
         <h1 className="text-3xl font-bold tracking-tight">Jungle Safari Inventory</h1>
         <p className="text-muted-foreground">
-          Manage your souvenir products, check stock levels, and update information.
+          Manage your safari souvenir products, track stock levels, and process supplier orders.
         </p>
       </div>
       
@@ -19,23 +19,29 @@ const Inventory: React.FC = () => {
           <TabsTrigger value="low-stock">Low Stock</TabsTrigger>
           <TabsTrigger value="suppliers">Suppliers</TabsTrigger>
           <TabsTrigger value="purchase-orders">Purchase Orders</TabsTrigger>
+          <TabsTrigger value="barcode">Barcode Scanner</TabsTrigger>
         </TabsList>
         <TabsContent value="products">
           <InventoryList />
         </TabsContent>
         <TabsContent value="low-stock">
           <div className="text-center p-10 text-muted-foreground">
-            <p>Low stock items will appear here</p>
+            <p>Products below reorder threshold will appear here</p>
           </div>
         </TabsContent>
         <TabsContent value="suppliers">
           <div className="text-center p-10 text-muted-foreground">
-            <p>Supplier management will appear here</p>
+            <p>Tribal artisans, local manufacturers, and wholesale supplier management</p>
           </div>
         </TabsContent>
         <TabsContent value="purchase-orders">
           <div className="text-center p-10 text-muted-foreground">
-            <p>Purchase orders will appear here</p>
+            <p>Track orders from suppliers with automated reorder capabilities</p>
+          </div>
+        </TabsContent>
+        <TabsContent value="barcode">
+          <div className="text-center p-10 text-muted-foreground">
+            <p>Scan product barcodes for quick inventory checks and updates</p>
           </div>
         </TabsContent>
       </Tabs>
