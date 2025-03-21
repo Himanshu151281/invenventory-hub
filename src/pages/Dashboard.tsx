@@ -1,6 +1,8 @@
 
 import React from 'react';
 import DashboardOverview from '@/components/dashboard/DashboardOverview';
+import TransactionHistory from '@/components/dashboard/TransactionHistory';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Dashboard: React.FC = () => {
   return (
@@ -12,7 +14,18 @@ const Dashboard: React.FC = () => {
         </p>
       </div>
       
-      <DashboardOverview />
+      <Tabs defaultValue="overview" className="mb-6">
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="transactions">Transactions</TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview">
+          <DashboardOverview />
+        </TabsContent>
+        <TabsContent value="transactions">
+          <TransactionHistory />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

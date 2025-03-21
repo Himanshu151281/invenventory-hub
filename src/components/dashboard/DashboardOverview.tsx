@@ -3,16 +3,19 @@ import React from 'react';
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, PieChart, Pie, Cell } from 'recharts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import StatsCard from './StatsCard';
-import { mockStatsData, mockSalesData, mockCategoryData, mockSales } from '@/lib/mockData';
+import { mockCategoryData, mockStatsData } from '@/lib/mockData';
+import { useSalesStore } from '@/lib/stores/salesStore';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 const DashboardOverview: React.FC = () => {
+  const { sales } = useSalesStore();
+  
   // Calculate total revenue
-  const totalRevenue = mockSales.reduce((sum, sale) => sum + sale.totalAmount, 0);
+  const totalRevenue = sales.reduce((sum, sale) => sum + sale.totalAmount, 0);
   
   // Calculate cost price
-  const totalCostPrice = mockSales.reduce((sum, sale) => {
+  const totalCostPrice = sales.reduce((sum, sale) => {
     return sum + sale.products.reduce((prodSum, prod) => {
       return prodSum + (prod.product.costPrice * prod.quantity);
     }, 0);
@@ -20,7 +23,30 @@ const DashboardOverview: React.FC = () => {
   
   // Calculate profit
   const profit = totalRevenue - totalCostPrice;
-  const profitMargin = (profit / totalRevenue) * 100;
+  const profitMargin = totalRevenue > 0 ? (profit / totalRevenue) * 100 : 0;
+
+  // Generate monthly sales data
+  const generateMonthlySalesData = () => {
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    
+    const salesByMonth = months.map(month => ({
+      name: month,
+      value: 0
+    }));
+    
+    // Populate with actual sales data
+    sales.forEach(sale => {
+      const month = sale.timestamp.getMonth();
+      salesByMonth[month].value += sale.totalAmount;
+    });
+    
+    return salesByMonth;
+  };
+
+  const salesData = generateMonthlySalesData();
 
   return (
     <div className="space-y-6">
@@ -39,7 +65,7 @@ const DashboardOverview: React.FC = () => {
           <CardContent className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
-                data={mockSalesData}
+                data={salesData}
                 margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
               >
                 <defs>
@@ -148,17 +174,24 @@ const DashboardOverview: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {mockSales.map((sale) => (
-                <div key={sale.id} className="flex items-center justify-between">
-                  <div className="space-y-1">
-                    <p className="text-sm font-medium">Sale #{sale.id}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {sale.timestamp.toLocaleString()}
-                    </p>
-                  </div>
-                  <p className="font-medium">${sale.totalAmount.toLocaleString()}</p>
-                </div>
-              ))}
+              {sales.length > 0 ? (
+                [...sales]
+                  .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+                  .slice(0, 5)
+                  .map((sale) => (
+                    <div key={sale.id} className="flex items-center justify-between">
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium">Sale #{sale.id}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {sale.timestamp.toLocaleString()}
+                        </p>
+                      </div>
+                      <p className="font-medium">${sale.totalAmount.toLocaleString()}</p>
+                    </div>
+                  ))
+              ) : (
+                <p className="text-center text-muted-foreground py-4">No sales recorded yet</p>
+              )}
             </div>
           </CardContent>
         </Card>
