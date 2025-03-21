@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, PieChart, Pie, Cell } from 'recharts';
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis, PieChart, Pie, Cell } from 'recharts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import StatsCard from './StatsCard';
 import { mockStatsData } from '@/lib/mockData';
@@ -24,13 +23,11 @@ const DashboardOverview: React.FC = () => {
     getTotalCost 
   } = useSalesStore();
   
-  // Generate dashboard stats
   const totalRevenue = getTotalRevenue();
   const totalCostPrice = getTotalCost();
   const profit = getTotalProfit();
   const profitMargin = getProfitMargin();
   
-  // Get chart data
   const salesData = getMonthlySalesData();
   const categoryData = getSalesByCategory();
   const channelData = getSalesByChannel();
