@@ -58,7 +58,7 @@ const Transactions: React.FC = () => {
       updatedAt: new Date()
     };
 
-    // Create the sale object
+    // Create the sale object with an explicit Date object for timestamp
     const newSale: Sale = {
       id: uuidv4(),
       products: [{
@@ -70,7 +70,7 @@ const Transactions: React.FC = () => {
       paymentMethod: paymentMethod,
       employeeId: "EMP-001", // Default employee ID
       channel: channel,
-      timestamp: new Date()
+      timestamp: new Date() // Ensure this is explicitly a Date object
     };
 
     // Add the sale to the store

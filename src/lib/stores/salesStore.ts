@@ -25,20 +25,37 @@ interface SalesState {
   getLowStockProducts: () => Product[];
 }
 
+// Helper function to ensure timestamp is a Date object
+const ensureDateObject = (date: Date | string): Date => {
+  if (date instanceof Date) return date;
+  return new Date(date);
+};
+
 export const useSalesStore = create<SalesState>()(
   persist(
     (set, get) => ({
-      sales: [...mockSales], // Initialize with mock data
+      // Initialize with mock data and ensure dates are Date objects
+      sales: mockSales.map(sale => ({
+        ...sale,
+        timestamp: ensureDateObject(sale.timestamp)
+      })),
       
       addSale: (sale: Sale) => 
         set((state) => ({ 
-          sales: [...state.sales, sale] 
+          sales: [...state.sales, {
+            ...sale,
+            timestamp: ensureDateObject(sale.timestamp)
+          }] 
         })),
       
       updateSale: (id: string, updatedSale: Partial<Sale>) => 
         set((state) => ({
           sales: state.sales.map(sale => 
-            sale.id === id ? { ...sale, ...updatedSale } : sale
+            sale.id === id ? { 
+              ...sale, 
+              ...updatedSale,
+              timestamp: updatedSale.timestamp ? ensureDateObject(updatedSale.timestamp) : sale.timestamp
+            } : sale
           )
         })),
       
@@ -131,7 +148,9 @@ export const useSalesStore = create<SalesState>()(
         const monthlySales = months.map(month => ({ name: month, value: 0 }));
         
         sales.forEach(sale => {
-          const month = sale.timestamp.getMonth();
+          // Ensure timestamp is a Date object before calling getMonth()
+          const timestamp = ensureDateObject(sale.timestamp);
+          const month = timestamp.getMonth();
           monthlySales[month].value += sale.totalAmount;
         });
         
@@ -176,6 +195,15 @@ export const useSalesStore = create<SalesState>()(
     }),
     {
       name: 'jungle-safari-sales-storage', // Name in localStorage
+      onRehydrateStorage: () => (state) => {
+        // Ensure all timestamps are Date objects when rehydrating from storage
+        if (state) {
+          state.sales = state.sales.map(sale => ({
+            ...sale,
+            timestamp: ensureDateObject(sale.timestamp)
+          }));
+        }
+      }
     }
   )
 );
