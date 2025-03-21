@@ -8,6 +8,8 @@ export interface Product {
   costPrice: number;
   stock: number;
   imageUrl?: string;
+  supplier?: string;
+  reorderLevel?: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -23,6 +25,7 @@ export interface Sale {
   paymentMethod: 'cash' | 'card' | 'online';
   customerId?: string;
   employeeId: string;
+  channel: 'in-store' | 'online';
   timestamp: Date;
 }
 
@@ -38,6 +41,7 @@ export interface User {
   email: string;
   role: 'admin' | 'manager' | 'employee';
   avatar?: string;
+  permissions?: string[];
 }
 
 export interface StatsData {
@@ -50,4 +54,38 @@ export interface StatsData {
 export interface ChartData {
   name: string;
   value: number;
+}
+
+export interface Supplier {
+  id: string;
+  name: string;
+  contactPerson: string;
+  email: string;
+  phone: string;
+  address: string;
+  products: string[]; // product IDs
+}
+
+export interface PurchaseOrder {
+  id: string;
+  supplierId: string;
+  products: {
+    productId: string;
+    quantity: number;
+    unitPrice: number;
+  }[];
+  status: 'pending' | 'ordered' | 'received' | 'canceled';
+  totalAmount: number;
+  orderDate: Date;
+  expectedDeliveryDate?: Date;
+  deliveredDate?: Date;
+}
+
+export interface Customer {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  loyaltyPoints: number;
+  purchaseHistory: string[]; // sale IDs
 }
